@@ -6,8 +6,8 @@
 
 template <typename Iterator, typename Tag> struct iterator_adapter;
 
-// modern C++ no way to hide...
-// just like calling a funktion dont_call_me_XXXX()
+// Modern C++, no way to hide...
+// Just like calling a function dont_call_me_XXXX()
 namespace detail {
 struct value_iterator_tag {};
 }
@@ -43,9 +43,11 @@ public:
 	AdapterIterator & operator++()
 	{
 		++base_iter_;
+		// oh my...
 		return *static_cast<AdapterIterator*>(this);
 	}
 
+	// overload crap...
 	AdapterIterator operator++(int)
 	{
 		AdapterIterator res(base_iter_);
@@ -81,7 +83,7 @@ protected:
 };
 
 template <typename Iterator>
-// yeah looks sophisticated, doesn't it? Sophisticate my arse!
+// Yeah looks sophisticated, doesn't it? Sophisticate my arse!
 class iterator_adapter<Iterator, detail::value_iterator_tag> : public iterator_adapter_base<iterator_adapter<Iterator, detail::value_iterator_tag>, Iterator > {
 public:
 	// STL is just broken...
@@ -96,19 +98,19 @@ public:
 
 	iterator_adapter(Iterator const& base_iter)
 	:
-		// well we don't know what this means, could be anything... so please be explicit.
+		// Well we don't know what this means, could be anything... so please be explicit.
 		iterator_adapter_base<iterator_adapter<Iterator, detail::value_iterator_tag>, Iterator >(base_iter)
 	{ }
 
 	iterator_adapter(iterator_adapter const& o)
 	:
-		// oh, and mark the space at the end. C++1X finally did away with this HOORAYY! (sryly?)
+		// Oh, and mark the space at the end. C++1X finally did away with this HOORAYY! (srysly?)
 		iterator_adapter_base<iterator_adapter<Iterator, detail::value_iterator_tag>, Iterator >(o.base_iter_)
 	{ }
 
 	iterator_adapter & operator=(iterator_adapter const& o)
 	{
-		// again... what is base_iter_? ahh this one.
+		// Again... what is base_iter_? ahh *this* one.
 		this->base_iter_ = o.base_iter_;
 		return *this;
 	}
@@ -120,7 +122,7 @@ public:
 
 	pointer operator->() const
 	{
-		// looks beautiful doesn't it?
+		// Looks beautiful doesn't it?
 		return &(this->base_iter_->second);
 	}
 };
@@ -189,7 +191,7 @@ private:
 	const_iterator cend_;
 };
 
-// Yay let's overload some operators. 'Cause you know *frameworks*
+// Yay let's overload some operators. 'Cause you know: *frameworks*
 template <typename ContainerT, typename Tag>
 range_adaptor<ContainerT, Tag> operator|(ContainerT const& container, Tag)
 {
@@ -211,7 +213,7 @@ int main()
 	typedef std::map<int, bool> map_type;
 	map_type m;
 
-	// now any decent language has had this since 1995.
+	// Now any decent language has had this since 1995.
 	BOOST_FOREACH(bool x, m | value_adapter) {
 		(void) x;
 	}
@@ -221,7 +223,7 @@ int main()
 	}
 
 #if 0
-	// ahhrgg...
+	// ahhrgg... it's still essentially broken...
 	BOOST_FOREACH(bool & x, m | value_adapter) {
 		(void) x;
 	}
