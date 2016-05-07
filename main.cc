@@ -87,8 +87,6 @@ public:
 	typedef typename std::iterator_traits<Iterator>::value_type::second_type const* pointer;
 	typedef typename std::iterator_traits<Iterator>::value_type::second_type const& reference;
 
-	typedef Iterator base;
-
 	iterator_adapter() { }
 
 	iterator_adapter(Iterator const& base_iter)
